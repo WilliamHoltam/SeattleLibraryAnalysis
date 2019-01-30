@@ -59,8 +59,8 @@ df = spark.read \
   .options(**options) \
   .option("dbtable", "LIBRARY_COLLECTION_INVENTORY") \
   .load() \
-  .limit(300)
-# features = df.toPandas()
+  .limit(1000)
+features = df.toPandas()
 
 # COMMAND ----------
 
@@ -283,25 +283,6 @@ clustering_pipeline = Pipeline(
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC Latent Sentiment Analysis Pipeline
-# MAGIC ----------------------------------
-
-# COMMAND ----------
-
-# class VectorCapture(TransformerMixin, BaseEstimator):
-#   def __init__(self):
-#     pass
-  
-#   def fit(self, X, y = None):
-#     return self
-  
-#   def transform(self, X):
-#     self.tfidf_matrix = X
-#     return self.tfidf_matrix
-
-# COMMAND ----------
-
 # MAGIC %md 
 # MAGIC Post-processing Pipeline
 # MAGIC ------------------------
@@ -443,7 +424,6 @@ post_processing_pipeline = Pipeline(
 model_pipeline = Pipeline(
   [
     ('pre_p_pipe', pre_processing_pipeline),
-#     ("PCA", SVD(n_components=1000)),
     ('c_pipe', clustering_pipeline),
     ('post_p_pipe', post_processing_pipeline)
   ]
